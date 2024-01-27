@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: headTag}"></head>
+<body>
+    <nav th:replace="~{fragments/header :: headerTag}"></nav>
+    <div class="section">
+        User: <span sec:authentication="principal.username"></span>
+        Roles: <span sec:authentication="principal.authorities"></span>
+    </div>
+</body>
+</html>

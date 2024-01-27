@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: headTag}"></head>
+<body>
+    <nav th:replace="~{fragments/header :: headerTag}"></nav>
+    <div class="container p-5">
+        <form th:action="@{/users/save}" th:object="${userForm}"
+            method="post" autocomplete="off">
+            <h1>Register</h1>
+            <input hidden="true" type="text" id="id" th:field="*{id}">
+            <div class="row mb-3">
+                <label for="fullname" class="col-sm-2 col-form-label">Full
+                    Name</label>
+                <div class="col-sm-10">
+                    <input type="text" id="fullname"
+                        class="form-control" placeholder="Full Name"
+                        th:errorclass="is-invalid" autofocus="autofocus"
+                        th:field="*{fullName}"
+                        aria-describedby="validationFullnameFeedback">
+                    <div class="invalid-feedback"
+                        id="validationFullnameFeedback"
+                        th:if="${#fields.hasErrors('fullName')}"
+                        th:errors="*{fullName}"></div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="username" class="col-sm-2 col-form-label">Username</label>
+                <div class="col-sm-10">
+                    <input type="text" id="username"
+                        th:field="*{username}" class="form-control"
+                        th:errorclass="is-invalid"
+                        placeholder="Username"
+                        aria-describedby="validationUsernameFeedback"
+                        th:readonly="${userForm.id} != null">
+                    <div class="invalid-feedback"
+                        id="validationUsernameFeedback"
+                        th:if="${#fields.hasErrors('username')}"
+                        th:errors="*{username}"></div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="email" class="col-sm-2 col-form-label">Email</label>
+                <div class="col-sm-10">
+                    <input type="email" placeholder="Email"
+                        th:field="*{email}" class="form-control"
+                        th:errorclass="is-invalid"
+                        aria-describedby="validationEmailFeedback">
+                    <div class="invalid-feedback"
+                        id="validationEmailFeedback"
+                        th:if="${#fields.hasErrors('email')}"
+                        th:errors="*{email}"></div>
+                </div>
+            </div>
+            <div th:if="${userForm.id} == null" class="row mb-3">
+                <label for="password" class="col-sm-2 col-form-label">Password</label>
+                <div class="col-sm-10">
+                    <input type="password" id="password"
+                        th:field="*{password}" class="form-control"
+                        th:errorclass="is-invalid"
+                        placeholder="Password"
+                        aria-describedby="validationPasswordFeedback">
+                    <div class="invalid-feedback"
+                        id="validationPasswordFeedback"
+                        th:if="${#fields.hasErrors('password')}"
+                        th:errors="*{password}"></div>
+                </div>
+            </div>
+            <button class="btn btn-primary" type="submit">Save</button>
+            <a th:href="@{/users}">Back to user list</a>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: headTag}"></head>
+<body>
+    <nav th:replace="~{fragments/header :: headerTag}"></nav>
+    <div class="container p-5">
+        <form th:object="${productForm}">
+            <h1>Register</h1>
+            <input hidden="true" type="text" id="id" th:field="*{id}">
+            <div class="mb-3">
+                <label for="name">Name</label> <input type="text"
+                    id="name" class="form-control" placeholder="Name"
+                    th:field="*{name}" th:errorclass="is-invalid"
+                    aria-describedby="validationNameFeedback">
+                <div class="invalid-feedback"
+                    id="validationNameFeedback"
+                    th:if="${#fields.hasErrors('name')}"
+                    th:errors="*{name}"></div>
+            </div>
+            <div class="mb-3">
+                <label for="size">Size</label> <select
+                    class="form-select" id="size" th:field="*{size}"
+                    aria-label="Default select size">
+                    <option value="" selected>Choose size</option>
+                    <option value="1">S</option>
+                    <option value="2">M</option>
+                    <option value="3">L</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="color">Color</label> <select
+                    class="form-select" id="color" th:field="*{color}"
+                    aria-label="Default select color">
+                    <option value="" selected>Choose color</option>
+                    <option value="1">S</option>
+                    <option value="2">M</option>
+                    <option value="3">L</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="price">Price</label> <input type="text"
+                    id="price" class="form-control" placeholder="Price"
+                    th:field="*{price}" th:errorclass="is-invalid"
+                    aria-describedby="validationPriceFeedback">
+                <div class="invalid-feedback"
+                    id="validationPriceFeedback"
+                    th:if="${#fields.hasErrors('price')}"
+                    th:errors="*{price}"></div>
+            </div>
+            <div class="mb-3">
+                <label for="quantity">Quantity</label> <input
+                    type="number" id="quantity" class="form-control"
+                    placeholder="Quantity" th:field="*{quantity}"
+                    th:errorclass="is-invalid"
+                    aria-describedby="validationQuantityFeedback">
+                <div class="invalid-feedback"
+                    id="validationQuantityFeedback"
+                    th:if="${#fields.hasErrors('quantity')}"
+                    th:errors="*{quantity}"></div>
+            </div>
+            <div class="mb-3">
+                <label for="category">Category</label> <select
+                    class="form-select" id="category"
+                    th:field="*{category}"
+                    aria-label="Default select category">
+                    <option value="" selected>Choose category</option>
+                    <option value="1">A</option>
+                    <option value="2">B</option>
+                    <option value="3">C</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="imageUrl">Images</label> <input
+                    type="file" id="name" class="form-control" 
+                    placeholder="Images" th:field="*{imageUrl}"
+                    th:errorclass="is-invalid"
+                    aria-describedby="validationImageUrlFeedback">
+                <div class="invalid-feedback"
+                    id="validationImageUrlFeedback"
+                    th:if="${#fields.hasErrors('imageUrl')}"
+                    th:errors="*{imageUrl}"></div>
+            </div>
+            <div class="mb-3">
+                <label for="description">Description</label>
+                <textarea id="description" class="form-control"
+                    placeholder="Description" rows="3"
+                    th:field="*{description}" th:errorclass="is-invalid"
+                    aria-describedby="validationDescriptionFeedback">
+                </textarea>
+                <div class="invalid-feedback"
+                    id="validationDescriptionFeedback"
+                    th:if="${#fields.hasErrors('description')}"
+                    th:errors="*{description}"></div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

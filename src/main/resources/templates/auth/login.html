@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+<script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<title>Login</title>
+</head>
+<body>
+    <div class="d-flex justify-content-center">
+        <div class="mt-5">
+            <form style="width: 400px"
+                th:action="@{/authenticateTheUser}" method="post"
+                autocomplete="off">
+                <h1>My Application</h1>
+                <div class="alert alert-danger" th:if="${param.error}">
+                    You entered invalid Username/Password</div>
+                <div class="alert alert-info" th:if="${param.logout}">
+                    You have been logged out.</div>
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input id="username" name="username" type="text"
+                        placeholder="Username" class="form-control"
+                        required="required">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input id="password" name="password" type="password"
+                        placeholder="*******" class="form-control"
+                        required="required">
+                </div>
+                <button class="btn btn-primary" type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
