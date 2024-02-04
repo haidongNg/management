@@ -17,6 +17,10 @@ public class SecurityUser implements UserDetails {
    */
   private final User user;
 
+  public SecurityUser() {
+    this.user = new User();
+  }
+
   public SecurityUser(User user) {
     this.user = user;
   }

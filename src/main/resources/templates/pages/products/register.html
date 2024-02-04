@@ -4,7 +4,7 @@
 <body>
     <nav th:replace="~{fragments/header :: headerTag}"></nav>
     <div class="container p-5">
-        <form th:object="${productForm}">
+        <form th:object="${productForm}" th:action="@{/products/save}" method="post">
             <h1>Register</h1>
             <input hidden="true" type="text" id="id" th:field="*{id}">
             <div class="mb-3">
@@ -19,23 +19,31 @@
             </div>
             <div class="mb-3">
                 <label for="size">Size</label> <select
-                    class="form-select" id="size" th:field="*{size}"
-                    aria-label="Default select size">
+                    class="form-select" id="size" th:field="*{size}" th:errorclass="is-invalid"
+                    aria-label="Default select size" aria-describedby="validationSizeFeedback">
                     <option value="" selected>Choose size</option>
                     <option value="1">S</option>
                     <option value="2">M</option>
                     <option value="3">L</option>
                 </select>
+                <div class="invalid-feedback"
+                    id="validationSizeFeedback"
+                    th:if="${#fields.hasErrors('size')}"
+                    th:errors="*{size}"></div>
             </div>
             <div class="mb-3">
                 <label for="color">Color</label> <select
-                    class="form-select" id="color" th:field="*{color}"
-                    aria-label="Default select color">
+                    class="form-select" id="color" th:field="*{color}" th:errorclass="is-invalid"
+                    aria-label="Default select color" aria-describedby="validationColorFeedback">
                     <option value="" selected>Choose color</option>
                     <option value="1">S</option>
                     <option value="2">M</option>
                     <option value="3">L</option>
                 </select>
+                 <div class="invalid-feedback"
+                    id="validationColorFeedback"
+                    th:if="${#fields.hasErrors('color')}"
+                    th:errors="*{color}"></div>
             </div>
             <div class="mb-3">
                 <label for="price">Price</label> <input type="text"
@@ -60,25 +68,29 @@
             </div>
             <div class="mb-3">
                 <label for="category">Category</label> <select
-                    class="form-select" id="category"
+                    class="form-select" id="category" th:errorclass="is-invalid"
                     th:field="*{category}"
-                    aria-label="Default select category">
+                    aria-label="Default select category" aria-describedby="validationCategoryFeedback">
                     <option value="" selected>Choose category</option>
                     <option value="1">A</option>
                     <option value="2">B</option>
                     <option value="3">C</option>
                 </select>
+                <div class="invalid-feedback"
+                    id="validationCategoryFeedback"
+                    th:if="${#fields.hasErrors('category')}"
+                    th:errors="*{category}"></div>
             </div>
             <div class="mb-3">
                 <label for="imageUrl">Images</label> <input
                     type="file" id="name" class="form-control" 
-                    placeholder="Images" th:field="*{imageUrl}"
-                    th:errorclass="is-invalid"
+                    placeholder="Images" th:field="*{files}"
+                    th:errorclass="is-invalid" multiple="multiple"
                     aria-describedby="validationImageUrlFeedback">
                 <div class="invalid-feedback"
                     id="validationImageUrlFeedback"
-                    th:if="${#fields.hasErrors('imageUrl')}"
-                    th:errors="*{imageUrl}"></div>
+                    th:if="${#fields.hasErrors('files')}"
+                    th:errors="*{files}"></div>
             </div>
             <div class="mb-3">
                 <label for="description">Description</label>
@@ -92,6 +104,7 @@
                     th:if="${#fields.hasErrors('description')}"
                     th:errors="*{description}"></div>
             </div>
+            <button type="submit" class="btn btn-primary">Register</button>
         </form>
     </div>
 </body>
