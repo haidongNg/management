@@ -2,10 +2,12 @@ package com.nhd.management.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import com.nhd.management.auditing.ApplicationAuditAware;
 import com.nhd.management.services.user.IUserManagementService;
 
 @Configuration
@@ -38,4 +40,8 @@ public class ApplicationConfig {
     return authConfiguration.getAuthenticationManager();
   }
 
+  @Bean
+  AuditorAware<Long> auditorAware() {
+    return new ApplicationAuditAware();
+  }
 }

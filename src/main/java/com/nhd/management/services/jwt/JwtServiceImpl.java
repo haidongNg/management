@@ -22,6 +22,8 @@ import io.jsonwebtoken.security.Keys;
 public class JwtServiceImpl implements IJwtService {
   private static final Logger LOGGER = LoggerFactory.getLogger(JwtServiceImpl.class);
   private static final SecretKey SECRECT = Jwts.SIG.HS256.key().build();
+  private static final long jwtExpiration = 86400000;
+  private static final long refreshExpiration = 604800000;
 
   @Override
   public String extractUserName(String token) {
@@ -30,7 +32,7 @@ public class JwtServiceImpl implements IJwtService {
 
   @Override
   public String generateToken(UserDetails userDetails) {
-    return buildToken(new HashMap<>(), userDetails);
+    return buildToken(new HashMap<>(), userDetails, jwtExpiration);
   }
 
   @Override
@@ -38,22 +40,23 @@ public class JwtServiceImpl implements IJwtService {
     final String userName = extractUserName(token);
     return (userName.equals(userDetails.getUsername())) && !isTokenExpired(token);
   }
-  
+
   @Override
   public <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
     final Claims claims = extractAllClaims(token);
     return claimsResolvers.apply(claims);
   }
-  
+
   @Override
   public String generateRefreshToken(UserDetails userDetails) {
-    return buildToken(new HashMap<>(), userDetails);
+    return buildToken(new HashMap<>(), userDetails, refreshExpiration);
   }
- 
+
   @Override
   public boolean validateJwtToken(String token) {
     try {
-      Claims claims = Jwts.parser().verifyWith(getSingKey()).build().parseSignedClaims(token).getPayload();
+      Claims claims =
+          Jwts.parser().verifyWith(getSingKey()).build().parseSignedClaims(token).getPayload();
       if (claims != null) {
         return true;
       }
@@ -68,12 +71,12 @@ public class JwtServiceImpl implements IJwtService {
     }
     return false;
   }
-  
-  private String buildToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+
+  private String buildToken(Map<String, Object> extraClaims, UserDetails userDetails,
+      long expiration) {
     return Jwts.builder().claims(extraClaims).subject(userDetails.getUsername())
         .issuedAt(new Date(System.currentTimeMillis()))
-        .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
-        .signWith(getSingKey())
+        .expiration(new Date(System.currentTimeMillis() + expiration)).signWith(getSingKey())
         .compact();
   }
 

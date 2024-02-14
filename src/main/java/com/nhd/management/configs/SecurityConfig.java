@@ -9,8 +9,10 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 @Configuration
 @EnableWebSecurity()
@@ -28,6 +30,9 @@ public class SecurityConfig {
   @Autowired
   private AuthenticationEntryPointJwt unauthorizedHandler;
 
+  @Autowired
+  private LogoutHandler logoutHandler;
+
   @Bean
   SecurityFilterChain securityFilterChain(HttpSecurity https) throws Exception {
     https.csrf(configurer -> configurer.disable())
@@ -41,7 +46,10 @@ public class SecurityConfig {
         .headers(configurer -> configurer.frameOptions(
             config -> config.sameOrigin().httpStrictTransportSecurity(conf -> conf.disable())))
         .authenticationProvider(authenticationProvider)
-        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+        .logout(configurer -> configurer.logoutUrl("/v1/auth/logout")
+            .addLogoutHandler(logoutHandler).logoutSuccessHandler(
+                (request, response, authentication) -> SecurityContextHolder.clearContext()));
     return https.build();
   }
 }

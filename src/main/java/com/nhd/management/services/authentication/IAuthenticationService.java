@@ -1,8 +1,8 @@
 package com.nhd.management.services.authentication;
 
-import com.nhd.management.dto.requests.SigninRequest;
-import com.nhd.management.dto.responses.JwtAuthenticationResponse;
+import com.nhd.management.dto.requests.AuthenticationRequest;
+import com.nhd.management.dto.responses.AuthenticationResponse;
 
 public interface IAuthenticationService {
-  JwtAuthenticationResponse signin(SigninRequest theSignin);
+  AuthenticationResponse signin(AuthenticationRequest theSignin);
 }

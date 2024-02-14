@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class SigninRequest {
+public class AuthenticationRequest {
   private String username;
   private String password;
 }

@@ -27,6 +27,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   @Autowired
   private IUserManagementService userManagementService;
 
+
   @Autowired
   private static final Logger LOGGER = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
@@ -43,7 +44,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         SecurityUser userDetails =
             (SecurityUser) userManagementService.loadUserByUsername(username);
         if (StringUtils.hasText(username) && userDetails != null) {
-          if (jwtService.isTokenValid(jwt, userDetails)) {
+          // get token expired and revoked
+          boolean isTokenValid = userManagementService.isTokenValid(jwt);
+          if (jwtService.isTokenValid(jwt, userDetails) && isTokenValid) {
             UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(userDetails, null,
                     userDetails.getAuthorities());

@@ -2,13 +2,16 @@ package com.nhd.management.services.user;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.nhd.management.dto.UserDto;
+import com.nhd.management.models.AuthorizationToken;
 import com.nhd.management.models.SecurityUser;
 import com.nhd.management.models.User;
+import com.nhd.management.repositories.IAuthorizationTokenRepository;
 import com.nhd.management.repositories.IUserRepository;
 import com.nhd.management.utils.MngCommonUtils;
 import com.nhd.management.utils.ZzCheckUtils;
@@ -16,14 +19,13 @@ import com.nhd.management.utils.ZzCheckUtils;
 @Service
 public class UserManagementServiceImpl implements IUserManagementService {
 
-  private final IUserRepository userRepository;
-  private final PasswordEncoder passwordEncoder;
+  @Autowired
+  private IUserRepository userRepository;
+  @Autowired
+  private PasswordEncoder passwordEncoder;
+  @Autowired
+  private IAuthorizationTokenRepository authorizationTokenRepository;
 
-  public UserManagementServiceImpl(IUserRepository theUserRepository,
-      PasswordEncoder thePasswordEncoder) {
-    userRepository = theUserRepository;
-    passwordEncoder = thePasswordEncoder;
-  }
 
   @Override
   public User findByUsername(String theUsername) {
@@ -109,5 +111,14 @@ public class UserManagementServiceImpl implements IUserManagementService {
   @Override
   public void deleteById(long theId) {
     userRepository.deleteById(theId);
+  }
+  
+  @Override
+  public boolean isTokenValid(String token) {
+   Optional<AuthorizationToken> result = authorizationTokenRepository.findByToken(token);
+   if (result.isPresent()) {
+     return !result.get().isExpired() && !result.get().isRevoked();
+   }
+    return false;
   }
 }

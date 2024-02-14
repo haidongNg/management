@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.nhd.management.dto.requests.SigninRequest;
-import com.nhd.management.dto.responses.JwtAuthenticationResponse;
+import com.nhd.management.dto.requests.AuthenticationRequest;
+import com.nhd.management.dto.responses.AuthenticationResponse;
 import com.nhd.management.services.authentication.IAuthenticationService;
 import jakarta.validation.Valid;
 
@@ -27,8 +27,14 @@ public class AuthController {
   }
 
   @PostMapping("/login")
-  public ResponseEntity<JwtAuthenticationResponse> authenticateUser(@Valid @RequestBody SigninRequest theSigninRequest) {
-    JwtAuthenticationResponse resp = authenticationService.signin(theSigninRequest);
-    return new ResponseEntity<JwtAuthenticationResponse>(resp, HttpStatus.OK);
+  public ResponseEntity<AuthenticationResponse> authenticateUser(@Valid @RequestBody AuthenticationRequest theSigninRequest) {
+    AuthenticationResponse resp = authenticationService.signin(theSigninRequest);
+    return new ResponseEntity<AuthenticationResponse>(resp, HttpStatus.OK);
+  }
+  
+  @PostMapping("/refreshToken")
+  public ResponseEntity<String> refreshToken(){
+    // TODO
+    return new ResponseEntity<String>("", HttpStatus.OK);
   }
 }

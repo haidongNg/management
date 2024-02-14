@@ -7,6 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class JwtAuthenticationResponse {
-  private String token;
+public class AuthenticationResponse {
+  private String accessToken;
+  private String refreshToken;
 }

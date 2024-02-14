@@ -12,4 +12,5 @@ public interface IUserManagementService extends UserDetailsService{
   public User findById(long theId);
   public void deleteById(long theId);
   public void save(UserDto theUserDto);
+  boolean isTokenValid(String token);
 }
